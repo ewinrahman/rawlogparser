@@ -90,12 +90,14 @@ def pa_parser(logs):
     
 def gws_parser(logs):
     loads = json.loads(logs)
-    params = len(loads["events"][0])
-    print(params)
-    # Work to do: put if elif condition for the length of parameters. Google has different params length for different type of file owners e.g. shared drive, etc.
     actoremail = loads["actor"]["email"]
     action = loads["events"][0]["name"]
-    print(actoremail, action+"ed")
+    params = len(loads["events"][0]["parameters"])
+    # Work to do: put if elif condition for the length of parameters. Google has different params length for different type of file owners e.g. shared drive, etc.
+    if params == 11:
+        fileowner = loads["events"][0]["parameters"][3]["value"]
+        print(actoremail, action+"ed an item owned by "+fileowner)
+
     return loads
 
 
