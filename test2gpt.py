@@ -86,6 +86,15 @@ def main():
                 time.sleep(2)
                 pa_parser(logs)
                 return pa_parser
+        elif log_type == 'gws':
+            logs = parser_submenu_def(log_type)
+            if logs:
+                print(f"Log received: {logs}")
+                print()
+                print('Processing...')
+                time.sleep(2)
+                pa_parser(logs)
+                return pa_parser
     elif user_input == 'h':
         parser_menu_def(user_input)
 

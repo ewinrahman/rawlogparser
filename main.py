@@ -22,14 +22,13 @@ ref:
 - Threat: https://docs.paloaltonetworks.com/pan-os/9-1/pan-os-admin/monitoring/use-syslog-for-monitoring/syslog-field-descriptions/threat-log-fields#id83052cb2-4798-4f9c-abf8-e0b929ce7a3b
 '''
 
-import re
-import time
 
 '''Menu & Sub-Menu Functions'''
 def main_menu_def():
     menu_options = ('s', 'h', 'x')
 
     while True:
+        print('')
         print('**MENU**')
         print('s = start')
         print('h = help')
@@ -68,8 +67,7 @@ def parser_menu_def(user_input):
 
 def parser_submenu_def(log_type):
     if log_type in ('pa', 'gws', 'cs'):
-        logs = input('Paste the log here: '
-                     )
+        logs = input('Paste the log here: ')
         return logs
     elif log_type == 'x':
         exit()
@@ -87,18 +85,32 @@ def pa_parser(logs):
     for field in parsedlogs:
         print(field)
     return parsedlogs
-    
-def gws_parser(logs):
-    loads = json.loads(logs)
-    actoremail = loads["actor"]["email"]
-    action = loads["events"][0]["name"]
-    params = len(loads["events"][0]["parameters"])
-    # Work to do: put if elif condition for the length of parameters. Google has different params length for different type of file owners e.g. shared drive, etc.
-    if params == 11:
-        fileowner = loads["events"][0]["parameters"][3]["value"]
-        print(actoremail, action+"ed an item owned by "+fileowner)
 
-    return loads
+def gws_parser(logs, indent=0):
+    if isinstance(logs, dict):
+        for key, value in logs.items():
+            print('  ' * indent + f'{key}:')  # Print the key with indentation
+            gws_parser(value, indent + 1)  # Recursive call for nested data
+    elif isinstance(logs, list):
+        for i, item in enumerate(logs):
+            print('  ' * indent + f'[{i}]:')  # Print the index with indentation
+            gws_parser(item, indent + 1)  # Recursive call for list items
+    else:
+        print('  ' * indent + str(logs))  # Print the value with indentation
+# def gws_parser(logs):
+#     loads = json.loads(logs)
+#     actoremail = loads["actor"]["email"]
+#     action = loads["events"][0]["name"]
+#     params = len(loads["events"][0]["parameters"])
+#     # Work to do: put if elif condition for the length of parameters. Google has different params length for different type of file owners e.g. shared drive, etc.
+#     if params == 11:
+#         fileowner = loads["events"][0]["parameters"][3]["value"]
+#         print(actoremail, action+"ed an item owned by "+fileowner)
+#     # if params == 12:
+#     # if params == 14:
+#     # if params == 15:
+
+#     return loads
 
 
 def main():
@@ -117,6 +129,8 @@ def main():
             logs = parser_submenu_def(log_type)
             if logs:
                 print(f"Log received: {logs}")
+                logs = logs.replace('\\"', '')
+                logs = json.loads(logs)
                 print()
                 print('Processing...')
                 time.sleep(2)
