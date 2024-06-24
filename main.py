@@ -79,9 +79,7 @@ def parser_submenu_def(log_type):
 def pa_parser(logs):
     delimiter = ','
     parse = re.split(delimiter, logs)
-    # print(parse)
     parsedlogs = list(filter(None, parse))
-    # print(parsedlogs)
     for field in parsedlogs:
         print(field)
     return parsedlogs
@@ -97,21 +95,6 @@ def gws_parser(logs, indent=0):
             gws_parser(item, indent + 1)  # Recursive call for list items
     else:
         print('  ' * indent + str(logs))  # Print the value with indentation
-# def gws_parser(logs):
-#     loads = json.loads(logs)
-#     actoremail = loads["actor"]["email"]
-#     action = loads["events"][0]["name"]
-#     params = len(loads["events"][0]["parameters"])
-#     # Work to do: put if elif condition for the length of parameters. Google has different params length for different type of file owners e.g. shared drive, etc.
-#     if params == 11:
-#         fileowner = loads["events"][0]["parameters"][3]["value"]
-#         print(actoremail, action+"ed an item owned by "+fileowner)
-#     # if params == 12:
-#     # if params == 14:
-#     # if params == 15:
-
-#     return loads
-
 
 def main():
     user_input = main_menu_def()
