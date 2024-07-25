@@ -8,3 +8,5 @@
 # SUPPORTED LOG TYPES
 - Palo Alto Firewall - Traffic Logs
 - Google Workspace - Google Drive Report Logs
+- Generic JSON Logs 
+- Generic CSV Logs (WIP)
